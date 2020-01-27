@@ -15,7 +15,7 @@ $ python -i dumbbell.py
 `disks` is a list of disk weights, it's assumed that 2 disks are available of each of them.
 ```
 >>> d.configurations()
-[3.0, 3.5, 5.0, 6.5, 8.0, 8.5, 10.0, 11.5, 13.0, 13.5, 15.0, 16.5, 18.0, 18.5, 20.0]
+[1.5, 3.0, 3.5, 5.0, 6.5, 8.0, 8.5, 10.0, 11.5, 13.0, 13.5, 15.0, 16.5, 18.0, 18.5, 20.0]
 ```
 This returns a sorted list of all possible weight configurations for this dumbbell.
 ```
