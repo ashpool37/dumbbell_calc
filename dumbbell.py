@@ -43,13 +43,12 @@ class Dumbbell:
         weight_range = max_weight - min_weight
         if weight_range <= 0:
             return dumbbell
-        plate_weights = []
         power_of_2 = 0
         while dumbbell.plates_weight() < weight_range:
             new_plate = (2 ** (power_of_2 - 1)) * max_delta
-            plate_weights.append(new_plate)
+            dumbbell.add_plate_pair(new_plate)
             power_of_2 += 1
         overhead = dumbbell.plates_weight() - weight_range
         if overhead >= 0:
-            plate_weights[-1] -= (overhead / 2)
-        return cls(grip=min_weight, plates=plate_weights)
+            dumbbell.plates[-1] -= (overhead / 2)
+        return dumbbell
