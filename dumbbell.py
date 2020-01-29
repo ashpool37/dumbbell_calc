@@ -1,36 +1,55 @@
-from itertools import combinations, takewhile
+from math import inf
+from typing import List, TypeVar, Type, Union
+from itertools import combinations
+from dataclasses import dataclass
+
+
+@dataclass
+class DumbbellPlateItem:
+    weight: float
+    count: Union[int, float] = inf
+    price: float = 0
+
 
 class Dumbbell:
-    def __init__(self, grip, disks):
+    def __init__(self, grip: float, plates: List[float] = None):
         self.grip = grip
-        self.disks = disks
+        self.plates = plates if (plates is not None) else []
 
-    def configurations(self):
+    def configurations(self) -> List[float]:
         weights = set()
-        for i in range(0, len(self.disks) + 1):
-            for conf in combinations(self.disks, i):
+        for i in range(0, len(self.plates) + 1):
+            for conf in combinations(self.plates, i):
                 weights.add(self.grip + 2 * sum(conf))
         return sorted(weights)
 
-    def max_delta(self):
+    def max_delta(self) -> float:
         confs = self.configurations()
         return max((confs[i] - confs[i - 1]
-               for i in range(1, len(confs))))
+                   for i in range(1, len(confs))))
+
+    def plates_weight(self) -> float:
+        return 2 * sum(self.plates)
+
+    def add_plate_pair(self, weight: float):
+        self.plates.append(weight)
+
+    DumbbellType = TypeVar("DumbbellType", bound="Dumbbell")
 
     @classmethod
-    def calc_exact(cls, min_weight, max_weight, max_delta):
+    def calc_exact(cls: Type[DumbbellType], min_weight: float,
+                   max_weight: float, max_delta: float) -> DumbbellType:
+        dumbbell = cls(grip=min_weight)
         weight_range = max_weight - min_weight
-        weights = []
         if weight_range <= 0:
-            return cls(grip=min_weight, disks=[])
-        total_disks_weight = 0
+            return dumbbell
+        plate_weights = []
         power_of_2 = 0
-        while total_disks_weight < weight_range:
-            new_weight = (2 ** (power_of_2 - 1)) * max_delta
-            weights.append(new_weight)
-            total_disks_weight += new_weight * 2
+        while dumbbell.plates_weight() < weight_range:
+            new_plate = (2 ** (power_of_2 - 1)) * max_delta
+            plate_weights.append(new_plate)
             power_of_2 += 1
-        overhead = total_disks_weight - weight_range
-        if overhead >= 1:
-            weights[-1] -= (overhead / 2)
-        return cls(grip=min_weight, disks=weights)
+        overhead = dumbbell.plates_weight() - weight_range
+        if overhead >= 0:
+            plate_weights[-1] -= (overhead / 2)
+        return cls(grip=min_weight, plates=plate_weights)

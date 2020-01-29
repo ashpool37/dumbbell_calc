@@ -3,23 +3,23 @@ A library and a cli tool to help assemble a modular dumbbell inventory
 
 ## Requirements
 
-Python 3.5+
+Python 3.7+
 
 ## Usage
 
 ```
 $ python -i dumbbell.py
->>> d = Dumbbell(grip=1.5, disks=[0.75, 1, 2.5, 5])
+>>> d = Dumbbell(grip=1.5, plates=[0.75, 1, 2.5, 5])
 ```
-This creates a dumbbell object with fixed grip weight and set of disk weights.\
+This creates a dumbbell object with fixed weights for grip and plates.\
 `grip` represents the weight of the dumbbell's grip.\
-`disks` is a list of disk weights, it's assumed that 2 disks are available of each of them.
+`plates` is a list of plates weights, it's assumed that 2 plates are available of each of them.
 ```
 >>> d = Dumbbell.calc_exact(min_weight=1.5, max_weight=20, max_delta=1.5) 
 ```
 This creates a dumbbell with automatically inferred grip and disk weights.\
-`min_weight` represents the minimum possible weight (no disks attached, only grip)\
-`max_weight` represents the maximum possible weight (all disks attached)\
+`min_weight` represents the minimum possible weight (no plates attached, only grip)\
+`max_weight` represents the maximum possible weight (all plates attached)\
 `max_delta` stands for maximum step allowed between adjacent configurations
 ```
 >>> d.configurations()
